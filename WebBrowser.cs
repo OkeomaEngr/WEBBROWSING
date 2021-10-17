@@ -199,8 +199,219 @@ namespace WebBrowsing
         {
             class Tab
             {
-                private class Node
+                public class Node
                 {
+                    private int _data;
+                    public int Data
+                    {
+                        get { return _data; }
+                        set { _data = value; }
+                    }
+
+                    private Node _next;
+                    public Node Next
+                    {
+                        get { return _next; }
+                        set { _next value; }
+                    }
+
+                    private Node _previous;
+                    public Node Previous
+                    {
+                        get { return _previous; }
+                        set { _previous value; }
+                    }
+
+                    public Node(int data)
+                    {
+                        Data = data;
+                    }
+
+
+                }
+
+                public class LinkedList : IEnumerable<Node>
+                {
+                    private Node head;
+                    public Node First
+                    {
+                        get { return head; }
+                    }
+
+                    private Node tail;
+                    public Node Last
+                    {
+                        get { return tail; }
+                    }
+
+                    public int Length { get; private set; }
+
+                    public IEnumerator GetEnumerator()
+                    {
+                        Node current = head;
+                        while (current != null)
+                        {
+                            yield return current;
+                            current = current.Next;
+                        }
+                    }
+
+                    IEnumerable IEnumerable.GetEnumerator()
+                    {
+                        return GetEnumerator();
+                    }
+
+                    public IEnumerator GetEnumeratorReverse()
+                    {
+                        Node current = tail;
+                        while (current != null)
+                        {
+                            yield return current;
+                            current = current.Previous;
+                        }
+                    }
+
+                    IEnumerable IEnumerable.GetEnumeratorReverse()
+                    {
+                        return GetEnumeratorReverse();
+                    }
+
+                    public void Add(int data)
+                    {
+
+                        Node newNode = new Node(data);
+                        if (tail == null)
+                        {
+                            head = newNode;
+                        }
+                        else
+                        {//Connect the final nodes
+                            newNode.Previous = tail;
+                            tail.Next = newNode;
+                        }
+                        // set new tail
+                        tail = newNode;
+                        Length++;
+                    }
+
+                    public void AddFirst(int data)
+                    {
+                        Node newNode = new Node(data);
+                        newNode.Next = head;
+
+                        if (head == null)
+                        {
+                            tail = newNode;
+                        }
+                        else
+                        {
+                            head.Previous = newNode;
+                        }
+
+                        head = newlode;
+                        Length++;
+
+                    }
+
+                    public bool Contains(int value)
+                    {
+                        Node current = head;
+                        while (current != null)
+                        {
+                            if (current.Data == value)
+                            {
+                                return true;
+                            }
+
+                            current = current.net;
+                        }
+
+                        return false;
+                    }
+
+                    public Node Find(int value)
+                    {
+                        Node current = head;
+                        while (current != null)
+                        {
+                            if (current.Data == value)
+                            {
+                                return current;
+                            }
+                            current = current.Next;
+                        }
+
+                        return null;
+
+                    }
+                    public bool Remove(int value)
+                    {
+                        Node current = head;
+                        while (current != null)
+                        {
+                            if (current.Data == value)
+                            {
+                                // end of the list
+                                if (current.Next == null)
+                                {
+                                    // removing last item in the list
+                                    tail = current.Previous;
+                                }
+                                else
+                                {
+                                    current.Next.Previous = current.Previous;
+                                }
+                                //start of the list
+                                if (current.Previous == null)
+                                {
+                                    head = current.Next;
+                                }
+                                else
+                                {
+                                    // tie the nodes back together
+                                    current.Previous Next = current.Next;
+                                }
+
+
+                                current = null;
+                                Length--;
+                                return true;
+                            }
+
+                            current = current.Next;
+                        }
+
+                        return false;
+                    }
+
+                    public void RemoveFirst()
+                    {
+                        if (head != null)
+                        {
+                            head = head.Next;
+                            // empty list
+                            if (head == null)
+                            {
+                                tail = null;
+                            }
+                            Length--;
+                        }
+                    }
+                    public void RemoveLast()
+                    {
+                        if (tail != null)
+                        {
+                            tail = tail.Previous;
+                            // empty list
+                            if (tail == null)
+                            {
+                                head = null;
+                            }
+                            Length--;
+
+
+                        }
+                    }
 
                 }
 
