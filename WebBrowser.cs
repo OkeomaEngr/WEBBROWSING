@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 namespace WebBrowsing
 {
+    /**Browser class contains webpages**/
+    class Browser
+    {
+        private List<Tab> T;
+        private int currentTab;
+       public Browser ( );
+       public void Start ( );
+       public void Move (int Tab) ;
+       public void Close (int Tab) ;
+       public void Visit(string S);
+       public void Back(); 
+       public void Forward();
+    }
+
+
     namespace DoubleStack
     {
         //common interface for all linear data structures
@@ -18,24 +33,27 @@ namespace WebBrowsing
 
         public interface IStack<T> : IContainer<T>
         {
-            void Push(T item); // Place an item on the top of a stack
-            void Pop();        // Remove the top item of a stack
-             T Top();          // Return the top item of a stack
+            void Push1(T item); // Place an item on the top of a stack
+            void Push2(T item);                       
+            void Pop1();   // Remove the top item of a stack
+            void Pop2();     
+            T Top1(); 
+            T Top2();         // Return the top item of a stack
         }
 
 
 
-        // Tabs
+        // Tab
         // Implementation : Linear Array 
-
-        public class Tab<T> : IStack<T> 
+        public class Tab<T> : IStack<T> , IContainer<T>
         {
             // Data Members
-            private int capacity; // Maximum capacity of the list 
-            private int count;    // number of items in the list 
+            private int size; // Maximum capacity of the stack 
+            private int count1;    // number of items in the first stack
+            private int count2;  // number of items in the second stack
             private T[] A;        // Linear array of items
-            private Stack<string> S1; // First stack of tabs
-            private Stack<string> S2; // second stack of tabs
+            private Stack<string> S1; // First stack of tab
+            private Stack<string> S2; // second stack of tab
 
 
             //  Constructor 
@@ -46,12 +64,14 @@ namespace WebBrowsing
             {
                 A = new T[n];
                 size = n;
-                S1 = -1; 
+                S1 = 0; 
                 S2 = size;        
             }
 
+            public Tab() : this(10) { } //invokes the stack to 10
+
             //method to push an element to stack S1
-            public virtual void push1( T x )
+            public virtual void Push1( T x )
             {
                 //there is at least one empty space for a new element
                 if (S1 < S2 - 1) 
@@ -66,7 +86,7 @@ namespace WebBrowsing
             }
 
             //method to push an element to stack S2
-            public virtual void push2( T x )
+            public virtual void Push2( T x )
             {
                 //there is at least one empty space for a new element
                 if (S1 < S2 - 1)
@@ -82,7 +102,7 @@ namespace WebBrowsing
 
             //method to Pop an element from stack S1
             //method to remove the webpage from the first stack
-            public virtual int pop1()
+            public virtual int Pop1()
              {
                 if (S1 >= 0) 
                 {
@@ -99,7 +119,7 @@ namespace WebBrowsing
 
             //method to pop an element from stack S2
             //method to remove the webpage from the second stack
-            public virtual int pop2()
+            public virtual int Pop2()
             {
                 if (S2 < size) 
                 {
@@ -113,6 +133,7 @@ namespace WebBrowsing
                 }
                 return 0;
             }
+
 
             //method to retrieve a webpage from S1 
             //returns default(T) if the stack is empty
@@ -157,42 +178,18 @@ namespace WebBrowsing
         static void Main(string[] args)
             {
                 Tab<string> S;
-                S = new Tab<string>(5);
-
+                S = new Tab<string>();
              
                 S.push1(A);
                 S.push2(B);
                 S.push2(C); /// need to change the numbers to letter----------- 
                 S.push1(D);
                 S.push2(E);
-                Console.WriteLine("Popped element from" + " stack1 is " + ts.pop1());
-                ts.push2(F);
-                Console.WriteLine("Popped element from" + " stack2 is " + ts.pop2());
+                Console.WriteLine("Popped element from" + " stack1 is " + S.pop1());
+                S.push2(F);
+                Console.WriteLine("Popped element from" + " stack2 is " + S.pop2());
             }
         }
-
-
-   /**Browser class contains webpages**/
-        class Browser
-        {
-            private List<Tab> T;
-            private int currentTab;
-        }
-
-        //list with header node ------------------------------------ Amber do you need this ?
-        public class List<T> : IList<T> 
-        {
-        //data members
-        private Node<T> head ; //reference to the head of the list 
-        private int count;  //number of items in the list
-        //Constructor
-        //creates an empty list with a header node
-        public List()
-        {
-            head = new Node<T>();
-            count = 0;
-        }
-        }   
 
 
         namespace DoublyLinkedListTab
